@@ -1,0 +1,51 @@
+diff --git a/lib/typescript/components/RadioButton/RadioButtonItem.d.ts b/lib/typescript/components/RadioButton/RadioButtonItem.d.ts
+index 2e65fdd2c31e30356835bf89b3fddda13e963132..4459c62e477860f2510db767f7383a12aa6d4bfd 100644
+--- a/lib/typescript/components/RadioButton/RadioButtonItem.d.ts
++++ b/lib/typescript/components/RadioButton/RadioButtonItem.d.ts
+@@ -93,6 +93,17 @@ export declare type Props = {
+      * Radio button control position.
+      */
+     position?: 'leading' | 'trailing';
++
++
++  /**
++   * patched
++   */
++  trailingIcon?: React.JSX.Element;
++
++  /**
++   * patched
++   */
++  leadingIcon?: React.JSX.Element;
+ };
+ /**
+  * RadioButton.Item allows you to press the whole row (item) instead of only the RadioButton.
+diff --git a/src/components/RadioButton/RadioButtonItem.tsx b/src/components/RadioButton/RadioButtonItem.tsx
+index adc1f7581336dfb074a0bbfd4756c481447440e5..51783aa51059a6b8b23e779b16ac8367dec73b47 100644
+--- a/src/components/RadioButton/RadioButtonItem.tsx
++++ b/src/components/RadioButton/RadioButtonItem.tsx
+@@ -112,6 +112,16 @@ export type Props = {
+    * Radio button control position.
+    */
+   position?: 'leading' | 'trailing';
++  
++  /**
++   * patched
++   */
++  trailingIcon?: React.JSX.Element;
++
++  /**
++   * patched
++   */
++  leadingIcon?: React.JSX.Element;
+ };
+ 
+ /**
+@@ -257,6 +267,7 @@ const styles = StyleSheet.create({
+     justifyContent: 'space-between',
+     paddingVertical: 8,
+     paddingHorizontal: 16,
++    gap: 8,
+   },
+   label: {
+     flexShrink: 1,
