@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ViewProps} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,8 +8,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export type FullCenteredViewProps = {};
+export type FullCenteredViewProps = ViewProps;
 
-export default function FullCenteredView(props: React.PropsWithChildren) {
-  return <View style={styles.container}>{props.children}</View>;
+export default function FullCenteredView(
+  props: React.PropsWithChildren<FullCenteredViewProps>,
+) {
+  return (
+    <View {...props} style={[styles.container, props.style]}>
+      {props.children}
+    </View>
+  );
 }

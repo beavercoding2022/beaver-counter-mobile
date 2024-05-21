@@ -7,11 +7,23 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 import {
+  KeyboardAvoidingView,
+  Platform,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
+import {
   MD3DarkTheme,
   MD3LightTheme,
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
+
+const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+  },
+});
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -39,11 +51,17 @@ export default function AppScreenContainer() {
   const {darkMode} = useAppSelector(selectAppConfig);
 
   return (
-    <PaperProvider theme={darkMode ? CombinedDarkTheme : CombinedDefaultTheme}>
-      <NavigationContainer
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.view}>
+      <StatusBar hidden />
+      <PaperProvider
         theme={darkMode ? CombinedDarkTheme : CombinedDefaultTheme}>
-        <RootStackNavigator />
-      </NavigationContainer>
-    </PaperProvider>
+        <NavigationContainer
+          theme={darkMode ? CombinedDarkTheme : CombinedDefaultTheme}>
+          <RootStackNavigator />
+        </NavigationContainer>
+      </PaperProvider>
+    </KeyboardAvoidingView>
   );
 }
