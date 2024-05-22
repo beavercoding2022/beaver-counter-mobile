@@ -2,9 +2,9 @@ import useAppDispatch from '@/common/hooks/useAppDispatch';
 import useAppSelector from '@/common/hooks/useAppSelector';
 import {
   selectDarkMode,
-  selectSimpleMode,
+  // selectSimpleMode,
   toggleDarkMode,
-  toggleSimpleMode,
+  // toggleSimpleMode,
 } from '@/store/appConfig/appConfigSlice';
 import {removeAllCounters} from '@/store/counter/counterSlice';
 import React from 'react';
@@ -21,7 +21,7 @@ export type SettingMainScreenParams = undefined;
 
 export default function SettingMainScreen() {
   const dispatch = useAppDispatch();
-  const simpleMode = useAppSelector(selectSimpleMode);
+  // const simpleMode = useAppSelector(selectSimpleMode);
   const darkMode = useAppSelector(selectDarkMode);
   const [visible, setVisible] = React.useState(false);
 
@@ -55,7 +55,7 @@ export default function SettingMainScreen() {
             />
           )}
         />
-        <List.Item
+        {/* <List.Item
           style={styles.listItem}
           title="상세 모드 활성화"
           left={() => <List.Icon icon="cog" />}
@@ -70,7 +70,7 @@ export default function SettingMainScreen() {
               }}
             />
           )}
-        />
+        /> */}
         <List.Subheader>앱 정보</List.Subheader>
         <List.Item
           style={styles.listItem}
