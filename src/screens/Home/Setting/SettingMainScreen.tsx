@@ -1,14 +1,15 @@
 import useAppDispatch from '@/common/hooks/useAppDispatch';
+import useAppNavigation from '@/common/hooks/useAppNavigation';
 import useAppSelector from '@/common/hooks/useAppSelector';
 import {
   selectDarkMode,
   // selectSimpleMode,
   toggleDarkMode,
-  // toggleSimpleMode,
 } from '@/store/appConfig/appConfigSlice';
 import {removeAllCounters} from '@/store/counter/counterSlice';
+import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Linking, StyleSheet} from 'react-native';
 import {Button, Dialog, List, Portal, Switch, Text} from 'react-native-paper';
 
 const styles = StyleSheet.create({
@@ -19,7 +20,13 @@ const styles = StyleSheet.create({
 
 export type SettingMainScreenParams = undefined;
 
+export const SettingMainScreenOptions: NativeStackNavigationOptions = {
+  title: '설정',
+  headerBackVisible: true,
+};
+
 export default function SettingMainScreen() {
+  const navigation = useAppNavigation();
   const dispatch = useAppDispatch();
   // const simpleMode = useAppSelector(selectSimpleMode);
   const darkMode = useAppSelector(selectDarkMode);
@@ -88,11 +95,22 @@ export default function SettingMainScreen() {
           style={styles.listItem}
           title="문의"
           left={() => <List.Icon icon="email" />}
+          onPress={() => {
+            Linking.openURL('mailto:beaver.coding.2022@gmail.com');
+          }}
         />
         <List.Item
           style={styles.listItem}
           title="오픈소스 라이센스"
           left={() => <List.Icon icon="file" />}
+          onPress={() => {
+            navigation.navigate('HomeBottomTabNavigator', {
+              screen: 'SettingStackNavigator',
+              params: {
+                screen: 'LicensesScreen',
+              },
+            });
+          }}
         />
       </List.Section>
 
