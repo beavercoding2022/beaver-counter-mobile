@@ -42,7 +42,7 @@ export default function SettingMainScreen() {
         <List.Item
           style={styles.listItem}
           title="다크 모드"
-          left={() => <List.Icon icon="cog" />}
+          left={() => <List.Icon icon="theme-light-dark" />}
           description={`다크 모드를 활성화합니다. (현재 모드: ${
             darkMode ? '다크' : '라이트'
           })`}

@@ -3,6 +3,7 @@ import FullCenteredView from '@/common/components/FullCenteredView';
 import useAppDispatch from '@/common/hooks/useAppDispatch';
 import useAppSelector from '@/common/hooks/useAppSelector';
 import {getIconsList} from '@/common/utils/icon';
+import DoubleColorPicker from '@/screens/Home/component/DoubleColorPicker';
 import {HomeBottomTabNavigationProps} from '@/screens/Home/navigator/HomeBottomTabNavigator';
 import {
   Counter,
@@ -41,6 +42,9 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   textInput: {
+    flex: 1,
+  },
+  iconList: {
     flex: 1,
   },
   iconListContainer: {
@@ -84,12 +88,25 @@ export default function CounterDetailScreen(props: CounterDetailScreenProps) {
 
   const dispatch = useAppDispatch();
 
+  const theme = useTheme();
   const [isEditMode, setEditMode] = React.useState<boolean>(false);
   const [iconName, setIconName] = React.useState<NonNullable<Counter['icon']>>(
     () => counter?.icon || '',
   );
   const [counterName, setCounterName] = React.useState<string>(
     () => counter?.name || '',
+  );
+  const initialBackgroundColor = React.useMemo(() => {
+    return counter?.color?.backgroundColor || theme.colors.surface;
+  }, [counter?.color, theme.colors.surface]);
+  const [backgroundColor, setBackgroundColor] = React.useState<string>(
+    () => initialBackgroundColor,
+  );
+  const initialTextColor = React.useMemo(() => {
+    return counter?.color?.textColor || theme.colors.secondary;
+  }, [counter?.color, theme.colors.secondary]);
+  const [textColor, setTextColor] = React.useState<string>(
+    () => initialTextColor,
   );
 
   const selectedIcons = React.useMemo(() => {
@@ -109,7 +126,6 @@ export default function CounterDetailScreen(props: CounterDetailScreenProps) {
       unsubscribe();
     };
   }, [props.navigation]);
-  const theme = useTheme();
 
   const renderIconListItem: ListRenderItem<NonNullable<Counter['icon']>> =
     React.useCallback(
@@ -148,37 +164,49 @@ export default function CounterDetailScreen(props: CounterDetailScreenProps) {
               }}
             />
           </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              label="아이콘 이름"
-              value={iconName}
-              style={styles.textInput}
-              onChangeText={text => {
-                setIconName(text);
-              }}
-            />
-            <View style={styles.iconContainer}>
-              <Icon source={counter.icon} size={20} />
+          <View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                label="아이콘 이름"
+                value={iconName}
+                style={styles.textInput}
+                onChangeText={text => {
+                  setIconName(text);
+                }}
+              />
+              <View style={styles.iconContainer}>
+                <Icon source={counter.icon} size={20} />
+              </View>
             </View>
+            <FlatList
+              style={styles.iconList}
+              contentContainerStyle={styles.iconListContainer}
+              data={selectedIcons}
+              keyExtractor={item => item}
+              ListEmptyComponent={
+                <FullCenteredView>
+                  <Text>아이콘 검색 결과가 없습니다.</Text>
+                </FullCenteredView>
+              }
+              renderItem={renderIconListItem}
+              numColumns={8}
+              initialNumToRender={16}
+              windowSize={16}
+              getItemLayout={(data, index) => ({
+                length: 32,
+                offset: 32 * index,
+                index,
+              })}
+              scrollEnabled
+            />
           </View>
-          <FlatList
-            contentContainerStyle={styles.iconListContainer}
-            data={selectedIcons}
-            keyExtractor={item => item}
-            ListEmptyComponent={
-              <FullCenteredView>
-                <Text>아이콘 검색 결과가 없습니다.</Text>
-              </FullCenteredView>
-            }
-            renderItem={renderIconListItem}
-            numColumns={8}
-            initialNumToRender={16}
-            windowSize={16}
-            getItemLayout={(data, index) => ({
-              length: 32,
-              offset: 32 * index,
-              index,
-            })}
+          <DoubleColorPicker
+            backgroundColor={backgroundColor}
+            textColor={textColor}
+            initialBackgroundColor={initialBackgroundColor}
+            initialTextColor={initialTextColor}
+            setBackgroundColor={setBackgroundColor}
+            setTextColor={setTextColor}
           />
         </View>
         <View style={styles.bottomButtonContainer}>
@@ -193,6 +221,10 @@ export default function CounterDetailScreen(props: CounterDetailScreenProps) {
                   config: {
                     icon: iconName,
                     name: counterName,
+                    color: {
+                      backgroundColor,
+                      textColor,
+                    },
                   },
                 }),
               );
