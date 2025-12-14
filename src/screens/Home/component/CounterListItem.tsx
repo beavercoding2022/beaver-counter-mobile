@@ -32,7 +32,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export type CounterListItemProps = Counter;
+export type CounterListItemProps = Counter & {
+  selected?: boolean;
+  onToggleSelect?: (id: string) => void;
+};
 
 export default function CounterListItem(props: CounterListItemProps) {
   const dispatch = useAppDispatch();
@@ -47,6 +50,7 @@ export default function CounterListItem(props: CounterListItemProps) {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.iconAndName}
+        onLongPress={() => props.onToggleSelect?.(props.id)}
         onPress={() => {
           navigation.navigate('HomeBottomTabNavigator', {
             screen: 'CounterDetailScreen',
@@ -57,7 +61,11 @@ export default function CounterListItem(props: CounterListItemProps) {
         }}>
         <Icon
           source={props.icon}
-          color={props.color?.textColor || theme.colors.secondary}
+          color={
+            props.selected
+              ? theme.colors.primary
+              : props.color?.textColor || theme.colors.secondary
+          }
           size={24}
         />
         <Text>{props.name}</Text>
